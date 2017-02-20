@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Fluo Mx</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<style>
+
+body {
+  overflow: hidden;
+  margin: 0;
+  background: #000;
+}
+	.background {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+
+	.hover {
+		position: absolute;
+		background: rgba(#000, 0.5);
+		width: 100%;
+		height: 100%;
+		transition: .15s ease-out;
+	}
+}
+
+
+
+.enter-the-vault {
+  filter: url('#goo');
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.vault-text-container {
+  position: absolute;	
+  right: 0;
+  left: -50px;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  top: 48%;
+
+  text-align: center;
+  cursor: pointer;
+
+}
+
+.vault-ball {
+  position: absolute;	
+  background: white;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  border-radius: 100%;
+}
+
+.goo-ball-container, .goo-ball, .goo-ball__goo {
+  position: absolute;
+  left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+.goo-ball-container {
+    height: 100px;
+    top: 50%;
+
+}
+
+.goo-ball {
+    height: 100px;
+    top: 0;
+}
+
+.goo-ball__goo {
+  background: #fff;
+  margin: 0 auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+	</style>
+</head>
+<body>
+	<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="800">
+  	<defs>
+	    <filter id="goo">
+		    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+		    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+		    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+	    </filter>
+  	</defs>
+</svg>
+
+<section class="featured-work">
+	<router-link class="enter-the-vault" to="/projects">
+		<div class="goo-ball-container">
+			<div class="goo-ball">
+				<div class="goo-ball__goo"></div>
+			</div>
+			<div class="goo-ball">
+				<div class="goo-ball__goo"></div>
+			</div>
+			<div class="goo-ball">
+				<div class="goo-ball__goo"></div>
+			</div>
+			<div class="goo-ball">
+				<div class="goo-ball__goo"></div>
+			</div>
+			<div class="goo-ball">
+				<div class="goo-ball__goo"></div>
+			</div>
+			<div class="goo-ball">
+				<div class="goo-ball__goo"></div>
+			</div>
+			<div class="goo-ball">
+				<div class="goo-ball__goo"></div>
+			</div>
+			<div class="goo-ball">
+				<div class="goo-ball__goo"></div>
+			</div>
+		</div>
+		<div class="vault-text-container">
+			<img src="logo.svg">
+		</div>
+	</router-link>	
+</section>
+<script type="text/javascript">
+	// Initialization
+const totalGooballs = $('.goo-ball').length;
+const angle = 360 / totalGooballs;
+
+$('.goo-ball').each(function(i) {
+	const rotationAngle = angle * i;
+
+	$(this).css({
+		transform: 'rotate(' + rotationAngle + 'deg)',
+	});
+});
+
+
+const entryTimeline = new TimelineMax({
+	onComplete: function() {
+		pulsateGooBalls();
+	}
+});
+
+TweenMax.set($('.goo-ball__goo'), {y: 150});
+
+entryTimeline.add([
+	TweenMax.staggerFromTo($('.goo-ball__goo'), 0.3, {scale: 0}, {scale: 1, ease: Power3.easeOut}, 0.10),
+	TweenMax.staggerTo($('.goo-ball__goo'), 1.2, {y: 160, ease: Power3.easeOut}, 0.25),
+	TweenMax.staggerTo($('.goo-ball__goo'), 0.5, {
+		y: 0, 
+		delay: 0.7, 
+		ease: Power4.easeOut, 
+	}, 0.15),
+]);
+
+
+function pulsateGooBalls() {
+	const pulseTimeline = new TimelineMax({repeat: -1});
+
+	for (let i = 0; i < totalGooballs; i++) {
+		pulseTimeline.to($('.goo-ball__goo')[i], 0.6, {
+			y: -8, 
+			delay: Math.random(),
+			repeat: -1, 
+			yoyo:true
+		}, 0);
+	}
+}
+
+
+$('.enter-the-vault').click(function() {
+	const leaveTimeline = new TimelineMax({onComplete: function() {
+		entryTimeline.restart();
+	}});
+
+	leaveTimeline.add([
+		TweenMax.staggerTo($('.goo-ball__goo'), 0.5, {y: 160, scale: 8, ease: Power3.easeInOut}, 0.18),
+		TweenMax.staggerTo($('.goo-ball__goo'), 1.7, {scale: 5, ease: Power3.easeInOut}, 0.18),
+	]);
+
+	leaveTimeline.add([
+		TweenMax.to($('.goo-ball__goo'), 0.5, {y: 0, scale: 0, ease: Power3.easeInOut}),
+		TweenMax.to($('.vault-ball'), 1, {scale: 0, ease: Power3.easeInOut})	
+	]);
+});
+</script>
+</body>
+</html>

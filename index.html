@@ -12,25 +12,8 @@ body {
   margin: 0;
   background: #000;
 }
-	.background {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-	}
-
-	.hover {
-		position: absolute;
-		background: rgba(#000, 0.5);
-		width: 100%;
-		height: 100%;
-		transition: .15s ease-out;
-	}
+	
 }
-
-
-
 .enter-the-vault {
   filter: url('#goo');
   width: 100%;
@@ -39,17 +22,13 @@ body {
 }
 
 .vault-text-container {
-  position: absolute;	
-  right: 0;
-  left: -50px;
-  margin: 0 auto;
-  width: 100px;
-  height: 100px;
-  top: 48%;
-
+  position: absolute;
+  top: calc(50% - 250px);
+  left: calc(50% - 150px);	
+  width: 300px;
+  height: 300px;
   text-align: center;
   cursor: pointer;
-
 }
 
 .vault-ball {
@@ -69,14 +48,13 @@ body {
 .goo-ball-container, .goo-ball, .goo-ball__goo {
   position: absolute;
   left: 0;
-    right: 0;
-    pointer-events: none;
+  right: 0;
+  pointer-events: none;
 }
 
 .goo-ball-container {
-    height: 100px;
-    top: 50%;
-
+    height: 300px;
+    top: calc(50% - 150px);
 }
 
 .goo-ball {
@@ -87,25 +65,15 @@ body {
 .goo-ball__goo {
   background: #fff;
   margin: 0 auto;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
 }
 
 	</style>
 </head>
 <body>
-	<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="800">
-  	<defs>
-	    <filter id="goo">
-		    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-		    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
-		    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
-	    </filter>
-  	</defs>
-</svg>
 
-<section class="featured-work">
 	<router-link class="enter-the-vault" to="/projects">
 		<div class="goo-ball-container">
 			<div class="goo-ball">
@@ -137,7 +105,6 @@ body {
 			<img src="logo.svg">
 		</div>
 	</router-link>	
-</section>
 <script type="text/javascript">
 	// Initialization
 const totalGooballs = $('.goo-ball').length;
